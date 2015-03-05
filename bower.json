@@ -1,0 +1,32 @@
+{
+  "name": "angular-nojq",
+  "version": "1.0.0",
+  "authors": [
+    "mehmetotkun <info@angularui.net>"
+  ],
+  "description": "Angular-NoJq is light weight native angular selector and dimension engine which includes some useful Jquery method for angular.element.",
+  "main": [
+    "angular-nojq.js"
+  ],
+  "keywords": [
+    "angular",
+    "selector",
+    "engine",
+    "nojq",
+    "no-jquery",
+    "dimension",
+    "jqlite",
+    "web"
+  ],
+  "license": "Apache 2",
+  "homepage": "http://angularui.net",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
