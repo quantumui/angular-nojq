@@ -1,26 +1,26 @@
-# [Angular-NoJq(Standalone)](http://angularui.net/appdoc/documents/home/nojq)
+# [Angular-NoJq(Standalone)](http://quantumui.org/appdoc/documents/home/nojq)
 Angular-NoJq is light weight native angular selector and dimension engine which includes some useful Jquery method for `angular.element`.
 
 ## Note:
-[QuantumUI](http://angularui.net/) is already included `Angular-NoJq`. If you want to use it without [QuantumUI](http://angularui.net/) you can download it.
+[QuantumUI](http://quantumui.org/) is already included `Angular-NoJq`. If you want to use it without [QuantumUI](http://quantumui.org/) you can download it.
 
 ## Links:
 
-+ [Home Page](http://angularui.net/)
-+ [Documentations](http://angularui.net/appdoc/documents/home/nojq) (see all methods)
++ [Home Page](http://quantumui.org/)
++ [Documentations](http://quantumui.org/appdoc/documents/home/nojq) (see all methods)
 
 ## Quick start
 
 Three quick start options are available:
 
-- [Download the latest release](https://github.com/angularui/angular-nojq/archive/master.zip).
-- Clone the repo: `git clone https://github.com/angularui/angular-nojq.git`.
+- [Download the latest release](https://github.com/quantumui/angular-nojq/archive/master.zip).
+- Clone the repo: `git clone https://github.com/quantumui/angular-nojq.git`.
 - Install with [Bower](http://bower.io): `bower install angular-nojq`.
 
 
 ## Documentation
 
-angualar-nojq's is full documentation, <http://angularui.net/appdoc/documents/home/nojq>.
+angualar-nojq's is full documentation, <http://quantumui.org/appdoc/documents/home/nojq>.
 
 ## Extended Methods from JQLite
 `.css()`
@@ -68,19 +68,19 @@ angualar-nojq's is full documentation, <http://angularui.net/appdoc/documents/ho
 
 **Mehmet Ötkün**
 
-+ <http://angularui.net>
++ <http://quantumui.org>
 + <https://twitter.com/angular_ui>
-+ <https://www.facebook.com/angularui>
-+ <https://github.com/angularui>
++ <https://www.facebook.com/quantumui>
++ <https://github.com/quantumui>
 + <https://github.com/mehmetotkun>
 
 
 
 ## Copyright and license
 
-***angular-nojq* is licenced under Apache License Version 2.0, January 2004)  (https://github.com/angularui/angular-nojq/blob/master/LICENSE) 
+***angular-nojq* is licenced under Apache License Version 2.0, January 2004)  (https://github.com/quantumui/angular-nojq/blob/master/LICENSE) 
 
-You are allowed to use these elements anywhere you want, however we’ll highly appreciate if you will link to our [website](http://angularui.net).
+You are allowed to use these elements anywhere you want, however we’ll highly appreciate if you will link to our [website](http://quantumui.org).
 
 
 
@@ -88,7 +88,7 @@ Social Media:
 
 Twitter: <https://twitter.com/angular_ui>
 
-Facebook: <https://www.facebook.com/angularui>
+Facebook: <https://www.facebook.com/quantumui>
 
 Google+: <https://plus.google.com/u/0/b/116727412287168023986/dashboard/overview>
 
