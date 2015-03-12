@@ -66,10 +66,10 @@ angualar-nojq's is full documentation, <http://quantumui.org/appdoc/documents/ho
 
 ## Authors
 
-**Mehmet Ötkün**
+**Mehmet Ã–tkÃ¼n**
 
 + <http://quantumui.org>
-+ <https://twitter.com/angular_ui>
++ <https://twitter.com/quantumui>
 + <https://www.facebook.com/quantumui>
 + <https://github.com/quantumui>
 + <https://github.com/mehmetotkun>
@@ -80,13 +80,13 @@ angualar-nojq's is full documentation, <http://quantumui.org/appdoc/documents/ho
 
 ***angular-nojq* is licenced under Apache License Version 2.0, January 2004)  (https://github.com/quantumui/angular-nojq/blob/master/LICENSE) 
 
-You are allowed to use these elements anywhere you want, however we’ll highly appreciate if you will link to our [website](http://quantumui.org).
+You are allowed to use these elements anywhere you want, however weâ€™ll highly appreciate if you will link to our [website](http://quantumui.org).
 
 
 
 Social Media:
 
-Twitter: <https://twitter.com/angular_ui>
+Twitter: <https://twitter.com/quantumui>
 
 Facebook: <https://www.facebook.com/quantumui>
 
