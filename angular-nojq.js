@@ -1,12 +1,8 @@
-/*!
- * QuantumUI Free v0.0.1 (http://angularui.net)
- * Copyright 2014-2015 Mehmet Otkun, angularui.net.
- */
-
-(function (window, angular, undefined) {
+﻿(function (window, angular, undefined) {
     'use strict';
     if (typeof jQuery != 'undefined')
         return
+    //http://stackoverflow.com/questions/6481612/queryselector-search-immediate-children
     var vdoc = window.document, elproto = window.Element.prototype;
     try {
         vdoc.querySelector(':scope body');
@@ -61,6 +57,9 @@
         function getStyles(elem) {
             if (!(elem instanceof HTMLElement))
                 return {};
+            // Support: IE<=11+, Firefox<=30+ (#15098, #14150)
+            // IE throws on elements created in popups
+            // FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
 
             if (elem.ownerDocument && elem.ownerDocument.defaultView.opener) {
                 return elem.ownerDocument.defaultView.getComputedStyle(elem, null);
@@ -116,6 +115,8 @@
             var position = computed.position,
             curElem = angular.element(elem),
             props = {};
+
+            // Set position first, in-case top/left are set even on static elem
             if (position === "static") {
                 elem.style.position = "relative";
             }
@@ -125,6 +126,9 @@
             curCSSLeft = computed.left;
             calculatePosition = (position === "absolute" || position === "fixed") &&
                 (curCSSTop + curCSSLeft).indexOf("auto") > -1;
+
+            // Need to be able to calculate position if either
+            // top or left is auto and position is either absolute or fixed
             if (calculatePosition) {
                 curPosition = getPosition(elem);
                 curTop = curPosition.top;
@@ -136,6 +140,8 @@
             }
 
             if (angular.isFunction(options)) {
+
+                // Use angular.extend here to allow modification of coordinates argument (gh-1848)
                 options = options.call(elem, i, angular.extend({}, curOffset));
             }
 
@@ -164,20 +170,30 @@
                 computed = getStyles(elem),
                     CSSposition = computed.position,
                     curElem = angular.element(elem);
+
+            // Fixed elements are offset from window (parentOffset = {top:0, left: 0},
+            // because it is its only offset parent
             if (CSSposition === "fixed") {
+                // Assume getBoundingClientRect is there when computed position is fixed
                 offset = elem.getBoundingClientRect();
 
             } else {
+                // Get *real* offsetParent
                 offsetParent = getOffsetParent(elem);
+                // Get correct offsets
                 offset = curElem.offset();
                 if (!nodeName(offsetParent, "html")) {
                     parentOffset = angular.extend(parentOffset, angular.element(offsetParent).offset());
 
                 }
+
+                // Add offsetParent borders
                 var computedParent = getStyles(offsetParent);
                 parentOffset.top += parseInt(computedParent.borderTopWidth, 0);
                 parentOffset.left += parseInt(computedParent.borderLeftWidth, 0);
             }
+
+            // Subtract parent offsets and element margins
             return {
                 top: offset.top - parentOffset.top - parseInt(computed.marginTop, 0),
                 left: offset.left - parentOffset.left - parseInt(computed.marginLeft, 0)
@@ -185,6 +201,7 @@
         };
         var getOffsetParent = function (elem) {
             var docElem = window.document.documentElement, that = elem[0] ? elem[0] : elem;
+            //return angular.map(elem, function() {
             var offsetParent = that && that.offsetParent || docElem,
                     computed = getStyles(that);
 
@@ -194,6 +211,7 @@
             }
             
             return offsetParent || docElem;
+            //});
         };
         var closest = function (elem, selector) {
             elem = elem.parentNode;
@@ -243,9 +261,15 @@
                 values[index] = dataPriv["olddisplay"];
                 display = elem.style.display;
                 if (show) {
+                    // Reset the inline display of this element to learn if it is
+                    // being hidden by cascaded rules or not
                     if (!values[index] && display === "none") {
                         elem.style.display = "";
                     }
+
+                    // Set elements which have been overridden with display: none
+                    // in a stylesheet to whatever the default browser style is
+                    // for such an element
                     if (elem.style.display === "" && isHidden(elem)) {
                         values[index] = defaultDisplay(elem.nodeName);
                         $elem.data(
@@ -264,6 +288,9 @@
                     }
                 }
             }
+
+            // Set the display of most of the elements in a second loop
+            // to avoid the constant reflow
             for (index = 0; index < length; index++) {
                 elem = elements[index];
                 if (!elem.style) {
@@ -277,6 +304,7 @@
             return elements;
         };
         var isHidden = function (elem, el) {
+            // in that case, element will be second argument
             elem = el || elem;
             return angular.element(elem).css("display") === "none" ||
                 !angular.contains(elem.ownerDocument, elem);
@@ -295,17 +323,26 @@
 
             if (!display) {
                 display = actualDisplay(nodeName, doc);
+
+                // If the simple way fails, read from inside an iframe
                 if (display === "none" || !display) {
+
+                    // Use the already-created iframe if possible
                     iframe = (iframe || angular.element("<iframe frameborder='0' width='0' height='0'/>"))
 
                     angular.element('body').append(iframe)
+                    // Always write a new HTML skeleton so Webkit and Firefox don't choke on reuse
                     doc = (iframe[0].contentWindow || iframe[0].contentDocument).document;
+
+                    // Support: IE
                     doc.write();
                     doc.close();
 
                     display = actualDisplay(nodeName, doc);
                     iframe.detach();
                 }
+
+                // Store the correct default display
                 elemdisplay[nodeName] = display;
             }
             return display;
@@ -338,6 +375,9 @@
 
                 angular.element(insert[i])[original](elems);
 
+                // Support: Android<4.1, PhantomJS<2
+                // .get() because push.apply(_, arraylike) throws on ancient WebKit
+
                 ret.push.apply(ret, elems.slice());
 
             }
@@ -348,6 +388,9 @@
             return elems.is(":visible");
         };
         var jqLite = angular.element;
+        // from jQuery
+        // Support: Android<4.1, PhantomJS<2
+        // push.apply(_, arraylike) throws on ancient WebKit
         angular.merge = function (first, second) {
             var len = second && +second.length || 0,
                 j = 0,
@@ -361,12 +404,15 @@
 
             return first;
         };
+        // arg is for internal usage only
         angular.map = function (elems, callback, arg) {
             var value,
                 i = 0,
                 length = elems.length,
                 isArray = angular.isArray(elems),
                 ret = [];
+
+            // Go through the array, translating each of the items to their new values
             if (isArray) {
                 for (; i < length; i++) {
                     value = callback(elems[i], i, arg);
@@ -375,6 +421,8 @@
                         ret.push(value);
                     }
                 }
+
+                // Go through every key on the object,
             } else {
                 for (i in elems) {
                     value = callback(elems[i], i, arg);
@@ -384,6 +432,7 @@
                     }
                 }
             }
+            // Flatten any nested arrays
             return [].concat.apply([], ret);
         };
         angular.contains = function (a, b) {
@@ -472,10 +521,17 @@
         jqLite.prototype.last = function () {
             return this.eq(-1);
         };
+        // from jQuery
+        // Take an array of elements and push it onto the stack
+        // (returning the new matched element set)
         jqLite.prototype.pushStack = function (elems) {
+            // Build a new angular matched element set
             var ret = angular.merge(angular.element(), elems);
+
+            // Add the old object onto the stack (as a reference)
             ret.prevObject = this;
             ret.context = this.context;
+            // Return the newly-formed element set
             return ret;
         };
 
@@ -502,11 +558,28 @@
         };
         jqLite.prototype.find = function (selector) {
             var context = this[0];
+            // Early return if context is not an element or document
             if (!context || (context.nodeType !== 1 && context.nodeType !== 9)  || !angular.isString(selector)) {
                 return [];
             }
             if (selector.charAt(0) === '>')
                 selector = ':scope ' + selector;
+            if (selector.indexOf(':visible') > -1) {
+                var elems = angular.element(context.querySelectorAll(selector.split(':visible')[0]))
+                var matches = [];
+                forEach(elems, function (val, i) {
+                    if (angular.element(val).is(':visible'))
+                        matches.push(val);
+                })
+                if (matches.length) {
+                    if (matches.length == 1)
+                        return angular.element(matches[0])
+                    else {
+                        return this.pushStack(matches)
+                    }
+                }
+                return angular.element();
+            }
             return angular.element(context.querySelectorAll(selector));
         };
         jqLite.prototype.has = function (node) {
@@ -522,7 +595,7 @@
 
         jqLite.prototype.closest = function (selector) {
             if (!this.length)
-                return [];
+                return angular.element();
             var matches = [];
             forEach(this, function (val, i) {
                 var node = closest(val, selector);
@@ -542,17 +615,32 @@
             var before = angular.isElement(selector) ? selector : angular.element(selector);
             that.after(before);
             before.after(that)
+            //if (!angular.isElement(selector))
+            //    selector = angular.element(selector);
+            //forEach(that, function (element, key) {
+            //    var index = element, parent = element.parentNode,
+            //    newElement = key == 0 ? selector : selector.clone();
+            //    for (var i = 0, ii = newElement.length; i < ii; i++) {
+            //        var node = newElement[i];
+            //        parent && parent.insertBefore(node, index.nextSibling);
+            //        index = node;
+            //    }
+            //})
 
 
             return this;
         };
         jqLite.prototype.index = function (elem) {
+            // No argument, return index in parent
             if (!elem) {
                 return (this[0] && this[0].parentNode) ? this.first().prevAll().length : -1;
             }
+
+            // Index in selector
             if (angular.isString(elem)) {
                 return angular.element(elem).indexOf(this[0]);
             }
+            // Locate the position of the desired element
             return this.indexOf(angular.isElement(elem) ? elem[0] : elem);
         };
         forEach({
@@ -570,6 +658,8 @@
                 var matched = angular.map(this, fn);
 
                 if (this.length > 1) {
+                    //TODO: Remove duplicates for prev
+                    // Reverse order for prev-derivatives
                     if (name == 'prev') {
                         matched = getUnique([]);
                         matched.reverse();
@@ -579,6 +669,7 @@
                 return this.pushStack(matched);
             };
         });
+        //manuplation
         forEach({
             appendTo: "append",
             prependTo: "prepend",
@@ -610,6 +701,8 @@
             }
 
             docElem = doc.documentElement;
+
+            // Make sure it's not a disconnected DOM node
             if (!angular.contains(docElem, elem)) {
                 return box;
             }
@@ -627,6 +720,7 @@
         jqLite.prototype.position = function () {
             return getPosition(this[0]);
         };
+        // Create scrollLeft and scrollTop methods
         forEach({ scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function (prop, method) {
             var top = "pageYOffset" === prop;
             jqLite.prototype[method] = function (val) {
@@ -743,6 +837,8 @@
             var that = this;
             return this.pushStack(getUnique((angular.merge(that[0], angular.element(selector, context)))));
         };
+
+        //overwrite jqLite
         var _jqLite = angular.element;
         function JQLite(element) {
             if (angular.isString(element)) {
