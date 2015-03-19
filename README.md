@@ -62,7 +62,9 @@ angualar-nojq's is full documentation, <http://quantumui.org/appdoc/documents/ho
 `.parents()`
 `.add()`
 
-
+## New Methods for JQLite
+`.slideUp()`
+`.slideDown()`
 
 ## Authors
 
