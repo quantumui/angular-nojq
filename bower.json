@@ -1,6 +1,6 @@
 {
   "name": "angular-nojq",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "authors": [
     "mehmetotkun <info@quantumui.org>"
   ],
@@ -29,5 +29,6 @@
     "tests"
   ],
   "dependencies": {
+    "angular": ">=1.4.0"
   }
 }
